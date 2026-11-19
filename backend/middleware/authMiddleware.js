@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = require('../models/User');
 
 const protect = async (req, res, next) => {
@@ -14,7 +15,17 @@ const protect = async (req, res, next) => {
         token,
         process.env.JWT_SECRET || 'stayeasy_secret_key_12345'
       );
-      req.user = await User.findById(decoded.id).select('-password');
+
+      if (mongoose.connection.readyState === 1) {
+        req.user = await User.findById(decoded.id).select('-password');
+      } else {
+        const { inMemoryUsers } = require('../controllers/authController');
+        req.user = (inMemoryUsers && inMemoryUsers.find((u) => u._id === decoded.id)) || {
+          _id: decoded.id,
+          role: 'guest',
+          name: 'Guest'
+        };
+      }
 
       if (!req.user) {
         return res.status(401).json({ message: 'User not found' });
