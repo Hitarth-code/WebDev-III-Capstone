@@ -130,7 +130,7 @@ const HotelDetails = () => {
   };
 
   if (loading && !hotel) {
-    return <div style={{ textAlign: 'center', padding: '40px' }}>Loading hotel details...</div>;
+    return <div style={{ textAlign: 'center', padding: '60px', color: '#94a3b8' }}>Loading property details...</div>;
   }
 
   if (!hotel) {
@@ -146,29 +146,33 @@ const HotelDetails = () => {
         <div className="hotel-banner-info">
           <div className="hotel-header">
             <div>
-              <h1 style={{ fontSize: '28px', color: '#111827' }}>{hotel.name}</h1>
-              <p className="hotel-location" style={{ fontSize: '15px', marginTop: '4px' }}>
+              <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '32px', color: '#ffffff' }}>
+                {hotel.name}
+              </h1>
+              <p className="hotel-location" style={{ fontSize: '15px', marginTop: '6px' }}>
                 📍 {hotel.address}, {hotel.city}
               </p>
             </div>
-            <span className="hotel-rating" style={{ fontSize: '16px', padding: '4px 12px' }}>
+            <span className="hotel-rating" style={{ fontSize: '16px', padding: '4px 14px' }}>
               ★ {hotel.rating}
             </span>
           </div>
-          <p style={{ color: '#4b5563', marginTop: '12px', fontSize: '15px' }}>{hotel.description}</p>
+          <p style={{ color: '#cbd5e1', marginTop: '14px', fontSize: '15px', lineHeight: '1.6' }}>
+            {hotel.description}
+          </p>
           {hotel.phone && (
-            <p style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
-              Contact: {hotel.phone}
+            <p style={{ marginTop: '10px', fontSize: '14px', color: '#94a3b8' }}>
+              📞 Concierge: {hotel.phone}
             </p>
           )}
         </div>
       </div>
 
-      <div style={{ background: '#ffffff', padding: '16px 20px', borderRadius: '10px', marginBottom: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-        <h3 style={{ marginBottom: '12px', fontSize: '16px', color: '#374151' }}>
-          Check Room Availability
+      <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-glass)', padding: '20px 24px', borderRadius: 'var(--radius-md)', marginBottom: '32px', backdropFilter: 'blur(16px)' }}>
+        <h3 style={{ marginBottom: '16px', fontSize: '16px', color: '#f8fafc', fontWeight: '600' }}>
+          Select Dates to Check Real-Time Availability
         </h3>
-        <form onSubmit={handleFilterRooms} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', alignItems: 'flex-end' }}>
+        <form onSubmit={handleFilterRooms} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', alignItems: 'flex-end' }}>
           <div className="search-field">
             <label>Check-in</label>
             <input
@@ -200,23 +204,23 @@ const HotelDetails = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ height: '42px' }}>
-            Check
+          <button type="submit" className="btn btn-primary" style={{ height: '46px' }}>
+            Check Availability
           </button>
         </form>
       </div>
 
       <div className="section-title">
-        <span>Available Rooms ({rooms.length})</span>
+        <span>Available Rooms & Suites ({rooms.length})</span>
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
 
       {rooms.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '10px' }}>
+        <div style={{ textAlign: 'center', padding: '50px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-glass)' }}>
           <h3>No rooms available for the selected dates.</h3>
-          <p style={{ color: '#6b7280', marginTop: '8px' }}>
-            Try choosing different dates.
+          <p style={{ color: '#94a3b8', marginTop: '8px' }}>
+            Please select different dates to browse available suites.
           </p>
         </div>
       ) : (
@@ -230,12 +234,13 @@ const HotelDetails = () => {
               />
               <div className="room-info">
                 <h3>
-                  {room.roomType} - Room #{room.roomNumber}
+                  {room.roomType} — Room #{room.roomNumber}
                 </h3>
                 <div className="room-meta">
-                  <span>Capacity: {room.capacity} Persons</span>
+                  <span>👥 Accommodates {room.capacity} Guests</span>
+                  <span>✨ Instant Confirmation</span>
                 </div>
-                <p style={{ fontSize: '13px', color: '#4b5563', marginBottom: '8px' }}>
+                <p style={{ fontSize: '13.5px', color: '#cbd5e1', marginBottom: '10px' }}>
                   {room.description}
                 </p>
                 <div className="room-amenities">
@@ -254,9 +259,9 @@ const HotelDetails = () => {
                 <button
                   onClick={() => handleOpenBooking(room)}
                   className="btn btn-success"
-                  style={{ marginTop: '10px' }}
+                  style={{ marginTop: '12px' }}
                 >
-                  Book Now
+                  Reserve Suite
                 </button>
               </div>
             </div>
@@ -268,7 +273,7 @@ const HotelDetails = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
-              <h3>Confirm Booking</h3>
+              <h3>Confirm Your Reservation</h3>
               <button onClick={() => setSelectedRoom(null)} className="modal-close-btn">
                 ✕
               </button>
@@ -277,20 +282,21 @@ const HotelDetails = () => {
             {bookingError && <div className="alert alert-error">{bookingError}</div>}
             {bookingSuccess && <div className="alert alert-success">{bookingSuccess}</div>}
 
-            <div style={{ marginBottom: '16px' }}>
-              <p><strong>Hotel:</strong> {hotel.name}</p>
+            <div style={{ marginBottom: '20px', lineHeight: '1.8' }}>
+              <p><strong>Property:</strong> {hotel.name}</p>
               <p><strong>Room:</strong> {selectedRoom.roomType} (#{selectedRoom.roomNumber})</p>
               <p><strong>Check-in:</strong> {checkIn}</p>
               <p><strong>Check-out:</strong> {checkOut}</p>
-              <p><strong>Duration:</strong> {days} Night(s)</p>
-              <p><strong>Guests:</strong> {guests} Guest(s)</p>
-              <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
-              <p style={{ fontSize: '18px', fontWeight: '700', color: '#2563eb' }}>
+              <p><strong>Duration:</strong> {days} Night{days > 1 ? 's' : ''}</p>
+              <p><strong>Guests:</strong> {guests} Person(s)</p>
+              <hr style={{ margin: '14px 0', border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)' }} />
+              <p style={{ fontSize: '22px', fontWeight: '800', color: '#38bdf8' }}>
                 Total: ₹{total}
               </p>
+              <small style={{ color: '#94a3b8' }}>*Pay upon arrival at the hotel front desk</small>
             </div>
 
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button
                 onClick={() => setSelectedRoom(null)}
                 className="btn btn-secondary"
@@ -303,7 +309,7 @@ const HotelDetails = () => {
                 className="btn btn-primary"
                 disabled={bookingLoading}
               >
-                {bookingLoading ? 'Booking...' : 'Confirm'}
+                {bookingLoading ? 'Confirming...' : 'Complete Booking'}
               </button>
             </div>
           </div>

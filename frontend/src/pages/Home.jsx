@@ -51,12 +51,12 @@ const Home = () => {
   return (
     <div>
       <div className="hero-banner">
-        <h1>Find Your Stay with StayEasy</h1>
-        <p>Book hotels and comfortable rooms easily.</p>
+        <h1>Discover Exceptional Stays with Stay.in</h1>
+        <p>Curated luxury hotels, boutique resorts, and premium suites designed for unforgettable journeys.</p>
 
         <form onSubmit={handleSearch} className="search-box">
           <div className="search-field">
-            <label>City</label>
+            <label>📍 Destination City</label>
             <input
               type="text"
               placeholder="e.g. Mumbai, Delhi, Bengaluru"
@@ -66,7 +66,7 @@ const Home = () => {
           </div>
 
           <div className="search-field">
-            <label>Check-in</label>
+            <label>🗓️ Check-in</label>
             <input
               type="date"
               value={checkIn}
@@ -76,7 +76,7 @@ const Home = () => {
           </div>
 
           <div className="search-field">
-            <label>Check-out</label>
+            <label>🗓️ Check-out</label>
             <input
               type="date"
               value={checkOut}
@@ -86,7 +86,7 @@ const Home = () => {
           </div>
 
           <div className="search-field">
-            <label>Guests</label>
+            <label>👥 Guests</label>
             <input
               type="number"
               min="1"
@@ -96,14 +96,14 @@ const Home = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ height: '42px' }}>
-            Search
+          <button type="submit" className="btn btn-primary" style={{ height: '46px' }}>
+            Search Stays
           </button>
         </form>
       </div>
 
       <div className="section-title">
-        <span>Available Hotels ({hotels.length})</span>
+        <span>Featured Properties ({hotels.length})</span>
         {city && (
           <button
             onClick={() => {
@@ -120,21 +120,23 @@ const Home = () => {
       {error && <div className="alert alert-error">{error}</div>}
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '40px' }}>Loading hotels...</div>
+        <div style={{ textAlign: 'center', padding: '60px', color: '#94a3b8' }}>Discovering luxury hotels...</div>
       ) : hotels.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '10px' }}>
-          <h3>No hotels found.</h3>
-          <p style={{ color: '#6b7280', marginTop: '8px' }}>Try searching another city.</p>
+        <div style={{ textAlign: 'center', padding: '50px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-glass)' }}>
+          <h3>No properties found matching your search.</h3>
+          <p style={{ color: '#94a3b8', marginTop: '8px' }}>Try searching another city or clearing your filter.</p>
         </div>
       ) : (
         <div className="hotels-grid">
           {hotels.map((hotel) => (
             <div key={hotel._id} className="hotel-card">
-              <img
-                src={hotel.image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'}
-                alt={hotel.name}
-                className="hotel-image"
-              />
+              <div className="hotel-image-wrapper">
+                <img
+                  src={hotel.image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'}
+                  alt={hotel.name}
+                  className="hotel-image"
+                />
+              </div>
               <div className="hotel-content">
                 <div className="hotel-header">
                   <h3 className="hotel-name">{hotel.name}</h3>
@@ -148,7 +150,7 @@ const Home = () => {
                   onClick={() => handleViewRooms(hotel._id)}
                   className="btn btn-primary btn-block"
                 >
-                  View Rooms
+                  View Available Rooms
                 </button>
               </div>
             </div>

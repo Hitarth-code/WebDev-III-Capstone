@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          🏨 StayEasy
+          ✨ Stay.in
         </Link>
 
         <div className="navbar-links">
@@ -32,10 +32,10 @@ const Navbar = () => {
               {isManager && (
                 <>
                   <Link to="/manage-hotels" className="nav-link">
-                    Manage Hotels
+                    Hotels
                   </Link>
                   <Link to="/manage-rooms" className="nav-link">
-                    Manage Rooms
+                    Rooms
                   </Link>
                   <Link to="/reports" className="nav-link">
                     Reports
@@ -55,10 +55,10 @@ const Navbar = () => {
           ) : (
             <>
               <Link to="/login" className="btn btn-outline btn-sm">
-                Login
+                Sign In
               </Link>
               <Link to="/register" className="btn btn-primary btn-sm">
-                Register
+                Get Started
               </Link>
             </>
           )}

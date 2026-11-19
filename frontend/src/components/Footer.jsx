@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p>© {new Date().getFullYear()} StayEasy - Hotel Room Booking System</p>
+        <p>© {new Date().getFullYear()} Stay.in - Premium Hotel & Suite Booking Platform</p>
       </div>
     </footer>
   );
