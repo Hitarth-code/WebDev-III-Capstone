@@ -1,7 +1,7 @@
 {
-  "name": "stayeasy-capstone",
+  "name": "stayin-capstone",
   "version": "1.0.0",
-  "description": "StayEasy - Hotel Room Booking System (WebDev Capstone Project)",
+  "description": "Stay.in - Premium Hotel & Suite Booking Platform",
   "scripts": {
     "server": "npm --prefix backend run dev",
     "client": "npm --prefix frontend run dev",
@@ -9,6 +9,14 @@
     "install:all": "npm --prefix backend install && npm --prefix frontend install",
     "build": "npm --prefix backend install && npm --prefix frontend install && npm --prefix frontend run build",
     "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5"
   },
   "keywords": [
     "mern-stack",

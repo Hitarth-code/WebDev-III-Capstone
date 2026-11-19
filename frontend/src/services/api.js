@@ -1,9 +1,14 @@
 const getApiBase = () => {
   if (typeof window !== 'undefined') {
-    if (window.location.port === '3000') {
-      return '/api';
+    // If running in development on localhost
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      if (window.location.port === '3000') {
+        return '/api';
+      }
+      return 'http://localhost:5000/api';
     }
-    return 'http://localhost:5000/api';
+    // In production on Vercel or any other domain, use relative /api
+    return '/api';
   }
   return '/api';
 };
@@ -28,7 +33,7 @@ const fetchWithAuth = async (endpoint, options = {}) => {
       headers
     });
   } catch (err) {
-    throw new Error('Cannot connect to backend server. Please make sure backend is running on port 5000 (npm run server).');
+    throw new Error('Cannot connect to backend server. Please make sure the backend is running.');
   }
 
   const contentType = response.headers.get('content-type');
@@ -39,7 +44,7 @@ const fetchWithAuth = async (endpoint, options = {}) => {
   } else {
     const text = await response.text();
     if (!response.ok) {
-      throw new Error('Backend server is not responding properly. Make sure the backend is running on port 5000.');
+      throw new Error('Backend server is not responding properly.');
     }
     data = { message: text };
   }
