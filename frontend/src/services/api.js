@@ -1,4 +1,14 @@
-const API_BASE = '/api';
+const getApiBase = () => {
+  if (typeof window !== 'undefined') {
+    if (window.location.port === '3000') {
+      return '/api';
+    }
+    return 'http://localhost:5000/api';
+  }
+  return '/api';
+};
+
+const API_BASE = getApiBase();
 
 const fetchWithAuth = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
@@ -11,15 +21,31 @@ const fetchWithAuth = async (endpoint, options = {}) => {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers
+    });
+  } catch (err) {
+    throw new Error('Cannot connect to backend server. Please make sure backend is running on port 5000 (npm run server).');
+  }
 
-  const data = await response.json();
+  const contentType = response.headers.get('content-type');
+  let data;
+
+  if (contentType && contentType.includes('application/json')) {
+    data = await response.json();
+  } else {
+    const text = await response.text();
+    if (!response.ok) {
+      throw new Error('Backend server is not responding properly. Make sure the backend is running on port 5000.');
+    }
+    data = { message: text };
+  }
 
   if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error(data.message || 'Request failed');
   }
 
   return data;
