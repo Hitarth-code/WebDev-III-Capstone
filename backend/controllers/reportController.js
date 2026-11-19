@@ -1,25 +1,17 @@
-// Report Controller
-// Computes Occupancy Rate and Revenue metrics using MongoDB Aggregation Pipeline
 const Booking = require('../models/Booking');
 const Hotel = require('../models/Hotel');
 const Room = require('../models/Room');
-const mongoose = require('mongoose');
 
-// @desc    Get Revenue and Occupancy Rate Reports using MongoDB Aggregation
-// @route   GET /api/reports/dashboard
-// @access  Private (Hotel Manager / Admin)
 const getReportsDashboard = async (req, res) => {
   try {
     let hotelMatch = {};
 
-    // If logged-in user is a hotel manager, restrict report to their hotels
     if (req.user.role === 'hotel_manager') {
       const myHotels = await Hotel.find({ manager: req.user._id }).select('_id');
       const hotelIds = myHotels.map((h) => h._id);
       hotelMatch = { hotel: { $in: hotelIds } };
     }
 
-    // 1. Overall Metrics Summary using Aggregation
     const overallStats = await Booking.aggregate([
       { $match: hotelMatch },
       {
@@ -46,7 +38,6 @@ const getReportsDashboard = async (req, res) => {
       }
     ]);
 
-    // 2. Revenue Report by Hotel using MongoDB Aggregation Pipeline
     const revenueByHotel = await Booking.aggregate([
       {
         $match: {
@@ -86,7 +77,6 @@ const getReportsDashboard = async (req, res) => {
       { $sort: { totalRevenue: -1 } }
     ]);
 
-    // 3. Occupancy Rate Report by Hotel using MongoDB Aggregation Pipeline
     const occupancyReport = await Booking.aggregate([
       {
         $match: {
@@ -148,7 +138,6 @@ const getReportsDashboard = async (req, res) => {
       { $sort: { occupancyRate: -1 } }
     ]);
 
-    // Format final response
     const summary = overallStats[0] || {
       totalBookings: 0,
       confirmedBookings: 0,

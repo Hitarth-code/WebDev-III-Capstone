@@ -1,6 +1,5 @@
-// Home Page - Search & Explore Hotels
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { hotelAPI } from '../services/api';
 
 const Home = () => {
@@ -8,7 +7,6 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Search filter states
   const [city, setCity] = useState('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
@@ -16,7 +14,6 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  // Load hotels on mount
   useEffect(() => {
     fetchHotels();
   }, []);
@@ -44,7 +41,6 @@ const Home = () => {
   };
 
   const handleViewRooms = (hotelId) => {
-    // Navigate to Hotel Details passing checkIn, checkOut, and guests as query params
     const query = new URLSearchParams();
     if (checkIn) query.append('checkIn', checkIn);
     if (checkOut) query.append('checkOut', checkOut);
@@ -54,14 +50,13 @@ const Home = () => {
 
   return (
     <div>
-      {/* Hero Banner with Availability Search Form */}
       <div className="hero-banner">
-        <h1>Find Your Perfect Stay with StayEasy</h1>
-        <p>Book luxury hotels, cozy rooms, and family suites at unbeatable prices.</p>
+        <h1>Find Your Stay with StayEasy</h1>
+        <p>Book hotels and comfortable rooms easily.</p>
 
         <form onSubmit={handleSearch} className="search-box">
           <div className="search-field">
-            <label>Destination City</label>
+            <label>City</label>
             <input
               type="text"
               placeholder="e.g. Mumbai, Delhi, Bengaluru"
@@ -71,7 +66,7 @@ const Home = () => {
           </div>
 
           <div className="search-field">
-            <label>Check-in Date</label>
+            <label>Check-in</label>
             <input
               type="date"
               value={checkIn}
@@ -81,7 +76,7 @@ const Home = () => {
           </div>
 
           <div className="search-field">
-            <label>Check-out Date</label>
+            <label>Check-out</label>
             <input
               type="date"
               value={checkOut}
@@ -102,12 +97,11 @@ const Home = () => {
           </div>
 
           <button type="submit" className="btn btn-primary" style={{ height: '42px' }}>
-            🔍 Search Hotels
+            Search
           </button>
         </form>
       </div>
 
-      {/* Hotel Listings */}
       <div className="section-title">
         <span>Available Hotels ({hotels.length})</span>
         {city && (
@@ -118,7 +112,7 @@ const Home = () => {
             }}
             className="btn btn-outline btn-sm"
           >
-            Clear City Filter
+            Clear Filter
           </button>
         )}
       </div>
@@ -129,8 +123,8 @@ const Home = () => {
         <div style={{ textAlign: 'center', padding: '40px' }}>Loading hotels...</div>
       ) : hotels.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '10px' }}>
-          <h3>No hotels found matching your destination.</h3>
-          <p style={{ color: '#6b7280', marginTop: '8px' }}>Try searching for a different city or clear the filter.</p>
+          <h3>No hotels found.</h3>
+          <p style={{ color: '#6b7280', marginTop: '8px' }}>Try searching another city.</p>
         </div>
       ) : (
         <div className="hotels-grid">
@@ -154,7 +148,7 @@ const Home = () => {
                   onClick={() => handleViewRooms(hotel._id)}
                   className="btn btn-primary btn-block"
                 >
-                  View Available Rooms
+                  View Rooms
                 </button>
               </div>
             </div>

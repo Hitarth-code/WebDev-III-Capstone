@@ -1,4 +1,3 @@
-// Manage Hotels Page (Hotel Manager & Admin)
 import React, { useState, useEffect } from 'react';
 import { hotelAPI } from '../services/api';
 
@@ -8,7 +7,6 @@ const ManageHotels = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Form states
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -92,7 +90,7 @@ const ManageHotels = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this hotel and all its rooms?')) {
+    if (!window.confirm('Delete this hotel and its rooms?')) {
       return;
     }
 
@@ -110,9 +108,9 @@ const ManageHotels = () => {
   return (
     <div>
       <div className="section-title">
-        <h2>Manage Hotels (CRUD)</h2>
+        <h2>Manage Hotels</h2>
         <button onClick={handleOpenCreate} className="btn btn-primary">
-          ➕ Add New Hotel
+          Add Hotel
         </button>
       </div>
 
@@ -123,9 +121,9 @@ const ManageHotels = () => {
         <div style={{ textAlign: 'center', padding: '40px' }}>Loading hotels...</div>
       ) : hotels.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '10px' }}>
-          <h3>No hotels found in your management dashboard.</h3>
+          <h3>No hotels managed yet.</h3>
           <p style={{ color: '#6b7280', marginTop: '8px' }}>
-            Click "Add New Hotel" to register your first property.
+            Click "Add Hotel" to add a hotel.
           </p>
         </div>
       ) : (
@@ -133,10 +131,10 @@ const ManageHotels = () => {
           <table className="report-table">
             <thead>
               <tr>
-                <th>Property</th>
+                <th>Hotel</th>
                 <th>City</th>
                 <th>Rating</th>
-                <th>Contact</th>
+                <th>Phone</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -172,12 +170,11 @@ const ManageHotels = () => {
         </div>
       )}
 
-      {/* Add / Edit Hotel Modal */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
-              <h3>{isEditing ? 'Edit Hotel' : 'Add New Hotel'}</h3>
+              <h3>{isEditing ? 'Edit Hotel' : 'Add Hotel'}</h3>
               <button onClick={() => setShowModal(false)} className="modal-close-btn">
                 ✕
               </button>
@@ -185,7 +182,7 @@ const ManageHotels = () => {
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Hotel Name</label>
+                <label>Name</label>
                 <input
                   type="text"
                   required
@@ -205,7 +202,7 @@ const ManageHotels = () => {
               </div>
 
               <div className="form-group">
-                <label>Street Address</label>
+                <label>Address</label>
                 <input
                   type="text"
                   required
@@ -215,7 +212,7 @@ const ManageHotels = () => {
               </div>
 
               <div className="form-group">
-                <label>Contact Phone</label>
+                <label>Phone</label>
                 <input
                   type="text"
                   value={formData.phone}
@@ -224,7 +221,7 @@ const ManageHotels = () => {
               </div>
 
               <div className="form-group">
-                <label>Rating (1 to 5)</label>
+                <label>Rating</label>
                 <input
                   type="number"
                   step="0.1"
@@ -239,7 +236,6 @@ const ManageHotels = () => {
                 <label>Image URL</label>
                 <input
                   type="url"
-                  placeholder="https://example.com/photo.jpg"
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                 />
@@ -264,7 +260,7 @@ const ManageHotels = () => {
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  {isEditing ? 'Save Changes' : 'Create Hotel'}
+                  Save
                 </button>
               </div>
             </form>

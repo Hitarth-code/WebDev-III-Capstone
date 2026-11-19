@@ -1,5 +1,3 @@
-// Booking Model
-// Stores reservations made by guests for specific rooms and dates
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
@@ -20,11 +18,11 @@ const bookingSchema = new mongoose.Schema({
   },
   checkInDate: {
     type: Date,
-    required: [true, 'Please provide check-in date']
+    required: true
   },
   checkOutDate: {
     type: Date,
-    required: [true, 'Please provide check-out date']
+    required: true
   },
   totalDays: {
     type: Number,

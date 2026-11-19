@@ -1,4 +1,3 @@
-// Navigation Bar Component
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -15,12 +14,10 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo */}
         <Link to="/" className="navbar-logo">
           🏨 StayEasy
         </Link>
 
-        {/* Navigation Links */}
         <div className="navbar-links">
           <Link to="/" className="nav-link">
             Explore Hotels
@@ -32,7 +29,6 @@ const Navbar = () => {
                 My Bookings
               </Link>
 
-              {/* Manager & Admin Links */}
               {isManager && (
                 <>
                   <Link to="/manage-hotels" className="nav-link">
@@ -42,18 +38,16 @@ const Navbar = () => {
                     Manage Rooms
                   </Link>
                   <Link to="/reports" className="nav-link">
-                    📊 Reports
+                    Reports
                   </Link>
                 </>
               )}
 
-              {/* User info pill */}
               <div className="user-badge">
-                <span>👤 {user.name}</span>
+                <span>{user.name}</span>
                 <span className="role-tag">{user.role.replace('_', ' ')}</span>
               </div>
 
-              {/* Logout Button */}
               <button onClick={handleLogout} className="btn btn-secondary btn-sm">
                 Logout
               </button>

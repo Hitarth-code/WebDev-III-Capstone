@@ -1,4 +1,3 @@
-// Authentication Context using React Context API
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { authAPI } from '../services/api';
 
@@ -8,7 +7,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user from localStorage on initial render
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
@@ -17,7 +15,6 @@ export const AuthProvider = ({ children }) => {
       try {
         setUser(JSON.parse(savedUser));
       } catch (err) {
-        console.error('Failed to parse saved user:', err);
         localStorage.removeItem('user');
         localStorage.removeItem('token');
       }
@@ -25,7 +22,6 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // Login handler
   const login = async (email, password) => {
     const data = await authAPI.login({ email, password });
     localStorage.setItem('token', data.token);
@@ -41,7 +37,6 @@ export const AuthProvider = ({ children }) => {
     return userInfo;
   };
 
-  // Register handler
   const register = async (userData) => {
     const data = await authAPI.register(userData);
     localStorage.setItem('token', data.token);
@@ -57,7 +52,6 @@ export const AuthProvider = ({ children }) => {
     return userInfo;
   };
 
-  // Logout handler
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -82,7 +76,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to consume AuthContext
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

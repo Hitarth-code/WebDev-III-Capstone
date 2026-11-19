@@ -1,9 +1,5 @@
-// API Service using the native browser Fetch API
-// Handles HTTP requests to the Express backend endpoints
-
 const API_BASE = '/api';
 
-// Helper function to make Fetch API requests with auth token
 const fetchWithAuth = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
   const headers = {
@@ -29,7 +25,6 @@ const fetchWithAuth = async (endpoint, options = {}) => {
   return data;
 };
 
-// 1. Auth Services
 export const authAPI = {
   login: (credentials) =>
     fetchWithAuth('/auth/login', {
@@ -44,7 +39,6 @@ export const authAPI = {
   getProfile: () => fetchWithAuth('/auth/profile')
 };
 
-// 2. Hotel Services
 export const hotelAPI = {
   getAll: (params = {}) => {
     const query = new URLSearchParams(params).toString();
@@ -68,7 +62,6 @@ export const hotelAPI = {
     })
 };
 
-// 3. Room Services
 export const roomAPI = {
   getByHotel: (hotelId, params = {}) => {
     const query = new URLSearchParams(params).toString();
@@ -91,7 +84,6 @@ export const roomAPI = {
     })
 };
 
-// 4. Booking Services
 export const bookingAPI = {
   create: (bookingData) =>
     fetchWithAuth('/bookings', {
@@ -106,7 +98,6 @@ export const bookingAPI = {
   getAll: () => fetchWithAuth('/bookings/all')
 };
 
-// 5. Reports Services (Occupancy & Revenue via Aggregation)
 export const reportAPI = {
   getDashboard: () => fetchWithAuth('/reports/dashboard')
 };

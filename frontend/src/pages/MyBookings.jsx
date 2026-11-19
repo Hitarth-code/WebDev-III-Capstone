@@ -1,4 +1,3 @@
-// My Bookings Page - View Booking History & Cancel Bookings
 import React, { useState, useEffect } from 'react';
 import { bookingAPI } from '../services/api';
 
@@ -35,7 +34,6 @@ const MyBookings = () => {
       setMessage('');
       await bookingAPI.cancel(bookingId);
       setMessage('Booking cancelled successfully.');
-      // Refresh list
       fetchBookings();
     } catch (err) {
       setError(err.message || 'Failed to cancel booking');
@@ -45,20 +43,18 @@ const MyBookings = () => {
   return (
     <div>
       <div className="section-title">
-        <h2>My Booking History & Stays</h2>
+        <h2>My Bookings</h2>
       </div>
 
       {message && <div className="alert alert-success">{message}</div>}
       {error && <div className="alert alert-error">{error}</div>}
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '40px' }}>Loading your reservations...</div>
+        <div style={{ textAlign: 'center', padding: '40px' }}>Loading reservations...</div>
       ) : bookings.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '10px' }}>
-          <h3>You have no bookings yet.</h3>
-          <p style={{ color: '#6b7280', marginTop: '8px' }}>
-            Explore our hotels and book your next stay!
-          </p>
+          <h3>No bookings found.</h3>
+          <p style={{ color: '#6b7280', marginTop: '8px' }}>Explore hotels to book a room.</p>
         </div>
       ) : (
         <div>
@@ -108,7 +104,7 @@ const MyBookings = () => {
                       className="btn btn-danger btn-sm"
                       style={{ marginTop: '6px' }}
                     >
-                      Cancel Reservation
+                      Cancel Booking
                     </button>
                   )}
                 </div>

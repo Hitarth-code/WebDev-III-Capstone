@@ -1,4 +1,3 @@
-// Main React App Component with React Router & AuthProvider
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -6,7 +5,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Pages
 import Home from './pages/Home';
 import HotelDetails from './pages/HotelDetails';
 import Login from './pages/Login';
@@ -24,13 +22,11 @@ function App() {
           <Navbar />
           <main className="main-content">
             <Routes>
-              {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/hotel/:id" element={<HotelDetails />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
-              {/* Protected Guest / User Routes */}
               <Route
                 path="/my-bookings"
                 element={
@@ -40,7 +36,6 @@ function App() {
                 }
               />
 
-              {/* Protected Hotel Manager & Admin Routes */}
               <Route
                 path="/manage-hotels"
                 element={
@@ -66,7 +61,6 @@ function App() {
                 }
               />
 
-              {/* 404 Fallback */}
               <Route
                 path="*"
                 element={

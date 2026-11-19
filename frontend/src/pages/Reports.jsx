@@ -1,4 +1,3 @@
-// Reports & Analytics Page (MongoDB Aggregation Pipeline)
 import React, { useState, useEffect } from 'react';
 import { reportAPI } from '../services/api';
 
@@ -18,14 +17,14 @@ const Reports = () => {
       const reportData = await reportAPI.getDashboard();
       setData(reportData);
     } catch (err) {
-      setError(err.message || 'Failed to fetch aggregation reports');
+      setError(err.message || 'Failed to fetch reports');
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '40px' }}>Calculating MongoDB Aggregation Reports...</div>;
+    return <div style={{ textAlign: 'center', padding: '40px' }}>Loading reports...</div>;
   }
 
   if (error) {
@@ -38,17 +37,16 @@ const Reports = () => {
     <div>
       <div className="section-title">
         <div>
-          <h2>📊 Occupancy Rate & Revenue Reports</h2>
+          <h2>Occupancy & Revenue Reports</h2>
           <p style={{ fontSize: '13px', color: '#6b7280', fontWeight: 'normal', marginTop: '4px' }}>
-            Powered by MongoDB Aggregation Pipeline ($match, $group, $lookup, $project)
+            MongoDB Aggregation Analytics
           </p>
         </div>
         <button onClick={fetchDashboardReport} className="btn btn-outline btn-sm">
-          🔄 Refresh Data
+          Refresh
         </button>
       </div>
 
-      {/* KPI Summary Cards */}
       <div className="metrics-row">
         <div className="metric-card">
           <div className="metric-label">Total Revenue</div>
@@ -73,18 +71,17 @@ const Reports = () => {
         </div>
       </div>
 
-      {/* Occupancy Rate Aggregation Report */}
       <div className="report-table-card">
         <h3 style={{ marginBottom: '14px', color: '#111827' }}>
-          🏨 Hotel Occupancy Rate Report
+          Hotel Occupancy Rate
         </h3>
         {occupancyReport && occupancyReport.length === 0 ? (
-          <p style={{ color: '#6b7280' }}>No occupancy records found.</p>
+          <p style={{ color: '#6b7280' }}>No records found.</p>
         ) : (
           <table className="report-table">
             <thead>
               <tr>
-                <th>Hotel Name</th>
+                <th>Hotel</th>
                 <th>City</th>
                 <th>Total Rooms</th>
                 <th>Rooms Booked</th>
@@ -97,8 +94,8 @@ const Reports = () => {
                   <tr key={item.hotelId}>
                     <td><strong>{item.hotelName}</strong></td>
                     <td>{item.city}</td>
-                    <td>{item.totalRooms} Rooms</td>
-                    <td>{item.roomsBooked} Rooms</td>
+                    <td>{item.totalRooms}</td>
+                    <td>{item.roomsBooked}</td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <div style={{ width: '100px', backgroundColor: '#e5e7eb', height: '10px', borderRadius: '5px', overflow: 'hidden' }}>
@@ -120,22 +117,21 @@ const Reports = () => {
         )}
       </div>
 
-      {/* Revenue Aggregation Report by Hotel */}
       <div className="report-table-card">
         <h3 style={{ marginBottom: '14px', color: '#111827' }}>
-          💰 Revenue Breakdown by Hotel
+          Revenue by Hotel
         </h3>
         {revenueByHotel && revenueByHotel.length === 0 ? (
-          <p style={{ color: '#6b7280' }}>No revenue records found.</p>
+          <p style={{ color: '#6b7280' }}>No records found.</p>
         ) : (
           <table className="report-table">
             <thead>
               <tr>
-                <th>Hotel Name</th>
+                <th>Hotel</th>
                 <th>City</th>
-                <th>Bookings Count</th>
-                <th>Total Nights</th>
-                <th>Avg. Booking Value</th>
+                <th>Bookings</th>
+                <th>Nights</th>
+                <th>Avg Booking</th>
                 <th>Total Revenue</th>
               </tr>
             </thead>
@@ -146,7 +142,7 @@ const Reports = () => {
                     <td><strong>{item.hotelName}</strong></td>
                     <td>{item.city}</td>
                     <td>{item.bookingsCount}</td>
-                    <td>{item.nightsCount} Nights</td>
+                    <td>{item.nightsCount}</td>
                     <td>₹{item.avgBookingValue}</td>
                     <td style={{ fontWeight: '700', color: '#2563eb' }}>₹{item.totalRevenue}</td>
                   </tr>

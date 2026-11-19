@@ -1,4 +1,3 @@
-// Login Page
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -26,7 +25,6 @@ const Login = () => {
     }
   };
 
-  // Helper for quick testing with demo credentials
   const fillCredentials = (demoEmail, demoPass) => {
     setEmail(demoEmail);
     setPassword(demoPass);
@@ -35,19 +33,19 @@ const Login = () => {
   return (
     <div className="auth-wrapper">
       <div className="auth-header">
-        <h2>Welcome Back to StayEasy</h2>
-        <p>Log in to manage your bookings and explore hotels</p>
+        <h2>Login to StayEasy</h2>
+        <p>Enter your email and password</p>
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Email Address</label>
+          <label>Email</label>
           <input
             type="email"
             required
-            placeholder="youremail@example.com"
+            placeholder="email@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -69,10 +67,9 @@ const Login = () => {
         </button>
       </form>
 
-      {/* Quick Test Demo Credentials for Evaluators */}
       <div style={{ marginTop: '24px', padding: '12px', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
         <p style={{ fontSize: '12px', fontWeight: '600', color: '#4b5563', marginBottom: '8px' }}>
-          💡 Quick Demo Accounts (Click to autofill):
+          Demo Accounts:
         </p>
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
           <button
@@ -87,7 +84,7 @@ const Login = () => {
             onClick={() => fillCredentials('manager@stayeasy.com', 'password123')}
             className="btn btn-outline btn-sm"
           >
-            Hotel Manager
+            Manager
           </button>
           <button
             type="button"
@@ -100,7 +97,7 @@ const Login = () => {
       </div>
 
       <div className="auth-switch">
-        Don't have an account? <Link to="/register">Create Account</Link>
+        Don't have an account? <Link to="/register">Register</Link>
       </div>
     </div>
   );

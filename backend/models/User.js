@@ -1,24 +1,22 @@
-// User Model
-// Roles supported: guest, hotel_manager, admin
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please provide your name'],
+    required: true,
     trim: true
   },
   email: {
     type: String,
-    required: [true, 'Please provide your email'],
+    required: true,
     unique: true,
     lowercase: true,
     trim: true
   },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
+    required: true,
     minlength: 6
   },
   role: {
@@ -36,7 +34,6 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Hash password before saving to database
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
@@ -46,7 +43,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Compare entered password with hashed password in database
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

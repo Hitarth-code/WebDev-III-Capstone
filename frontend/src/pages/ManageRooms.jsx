@@ -1,4 +1,3 @@
-// Manage Rooms Page (Hotel Manager & Admin)
 import React, { useState, useEffect } from 'react';
 import { hotelAPI, roomAPI } from '../services/api';
 
@@ -10,7 +9,6 @@ const ManageRooms = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Modal & Form States
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -69,7 +67,7 @@ const ManageRooms = () => {
 
   const handleOpenCreate = () => {
     if (!selectedHotelId) {
-      alert('Please select or create a hotel first.');
+      alert('Please select a hotel first.');
       return;
     }
     setIsEditing(false);
@@ -81,7 +79,7 @@ const ManageRooms = () => {
       pricePerNight: 2000,
       capacity: 2,
       amenities: 'Free Wi-Fi, Air Conditioning, TV',
-      description: 'Comfortable and clean room with modern amenities.',
+      description: 'Clean room with modern facilities.',
       image: ''
     });
     setShowModal(true);
@@ -109,7 +107,6 @@ const ManageRooms = () => {
       setError('');
       setSuccess('');
 
-      // Split amenities string into an array
       const amenitiesArray = formData.amenities
         .split(',')
         .map((a) => a.trim())
@@ -138,7 +135,7 @@ const ManageRooms = () => {
   };
 
   const handleDelete = async (roomId) => {
-    if (!window.confirm('Are you sure you want to delete this room?')) {
+    if (!window.confirm('Delete this room?')) {
       return;
     }
 
@@ -156,16 +153,15 @@ const ManageRooms = () => {
   return (
     <div>
       <div className="section-title">
-        <h2>Manage Rooms & Room Types (CRUD)</h2>
+        <h2>Manage Rooms</h2>
         <button onClick={handleOpenCreate} className="btn btn-primary" disabled={hotels.length === 0}>
-          ➕ Add New Room
+          Add Room
         </button>
       </div>
 
       {success && <div className="alert alert-success">{success}</div>}
       {error && <div className="alert alert-error">{error}</div>}
 
-      {/* Select Hotel Dropdown */}
       <div style={{ background: '#fff', padding: '16px 20px', borderRadius: '10px', marginBottom: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
         <label style={{ fontSize: '13px', fontWeight: '600', color: '#4b5563', marginRight: '12px' }}>
           Select Hotel:
@@ -187,9 +183,9 @@ const ManageRooms = () => {
         <div style={{ textAlign: 'center', padding: '40px' }}>Loading rooms...</div>
       ) : rooms.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '10px' }}>
-          <h3>No rooms added for this hotel yet.</h3>
+          <h3>No rooms added yet.</h3>
           <p style={{ color: '#6b7280', marginTop: '8px' }}>
-            Click "Add New Room" above to add room numbers and types.
+            Click "Add Room" to create a room.
           </p>
         </div>
       ) : (
@@ -197,7 +193,7 @@ const ManageRooms = () => {
           <table className="report-table">
             <thead>
               <tr>
-                <th>Room #</th>
+                <th>Room Number</th>
                 <th>Type</th>
                 <th>Price/Night</th>
                 <th>Capacity</th>
@@ -241,12 +237,11 @@ const ManageRooms = () => {
         </div>
       )}
 
-      {/* Add / Edit Room Modal */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
-              <h3>{isEditing ? 'Edit Room' : 'Add New Room'}</h3>
+              <h3>{isEditing ? 'Edit Room' : 'Add Room'}</h3>
               <button onClick={() => setShowModal(false)} className="modal-close-btn">
                 ✕
               </button>
@@ -258,7 +253,7 @@ const ManageRooms = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. 101, 202, 305"
+                  placeholder="e.g. 101, 202"
                   value={formData.roomNumber}
                   onChange={(e) => setFormData({ ...formData, roomNumber: e.target.value })}
                 />
@@ -289,7 +284,7 @@ const ManageRooms = () => {
               </div>
 
               <div className="form-group">
-                <label>Max Guest Capacity</label>
+                <label>Capacity</label>
                 <input
                   type="number"
                   required
@@ -301,20 +296,19 @@ const ManageRooms = () => {
               </div>
 
               <div className="form-group">
-                <label>Amenities (Comma separated)</label>
+                <label>Amenities</label>
                 <input
                   type="text"
-                  placeholder="Free Wi-Fi, Air Conditioning, TV, Mini Bar"
+                  placeholder="Free Wi-Fi, Air Conditioning, TV"
                   value={formData.amenities}
                   onChange={(e) => setFormData({ ...formData, amenities: e.target.value })}
                 />
               </div>
 
               <div className="form-group">
-                <label>Image URL (Optional)</label>
+                <label>Image URL</label>
                 <input
                   type="url"
-                  placeholder="https://example.com/room.jpg"
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                 />
@@ -338,7 +332,7 @@ const ManageRooms = () => {
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  {isEditing ? 'Save Changes' : 'Create Room'}
+                  Save
                 </button>
               </div>
             </form>

@@ -1,23 +1,16 @@
-// Hotel Controller
-// Handles Hotel CRUD operations and city/keyword search
 const Hotel = require('../models/Hotel');
 const Room = require('../models/Room');
 const Booking = require('../models/Booking');
 
-// @desc    Get all hotels (with optional search by city or keyword)
-// @route   GET /api/hotels
-// @access  Public
 const getHotels = async (req, res) => {
   try {
     const { city, search } = req.query;
     let query = {};
 
-    // Search by city if provided
     if (city && city.trim() !== '') {
       query.city = { $regex: city.trim(), $options: 'i' };
     }
 
-    // Search by hotel name or description if provided
     if (search && search.trim() !== '') {
       query.$or = [
         { name: { $regex: search.trim(), $options: 'i' } },
@@ -32,9 +25,6 @@ const getHotels = async (req, res) => {
   }
 };
 
-// @desc    Get single hotel by ID
-// @route   GET /api/hotels/:id
-// @access  Public
 const getHotelById = async (req, res) => {
   try {
     const hotel = await Hotel.findById(req.params.id).populate('manager', 'name email');
@@ -47,13 +37,9 @@ const getHotelById = async (req, res) => {
   }
 };
 
-// @desc    Get hotels managed by current logged-in manager
-// @route   GET /api/hotels/my-hotels
-// @access  Private (Hotel Manager / Admin)
 const getMyHotels = async (req, res) => {
   try {
     let query = {};
-    // If not admin, only fetch hotels belonging to this manager
     if (req.user.role !== 'admin') {
       query.manager = req.user._id;
     }
@@ -64,9 +50,6 @@ const getMyHotels = async (req, res) => {
   }
 };
 
-// @desc    Create a new hotel
-// @route   POST /api/hotels
-// @access  Private (Hotel Manager / Admin)
 const createHotel = async (req, res) => {
   try {
     const { name, description, address, city, rating, phone, image } = req.body;
@@ -89,9 +72,6 @@ const createHotel = async (req, res) => {
   }
 };
 
-// @desc    Update a hotel
-// @route   PUT /api/hotels/:id
-// @access  Private (Hotel Manager / Admin)
 const updateHotel = async (req, res) => {
   try {
     const hotel = await Hotel.findById(req.params.id);
@@ -100,9 +80,8 @@ const updateHotel = async (req, res) => {
       return res.status(404).json({ message: 'Hotel not found' });
     }
 
-    // Verify ownership or admin role
     if (hotel.manager.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized to update this hotel' });
+      return res.status(403).json({ message: 'Not authorized' });
     }
 
     hotel.name = req.body.name || hotel.name;
@@ -120,9 +99,6 @@ const updateHotel = async (req, res) => {
   }
 };
 
-// @desc    Delete a hotel and its rooms
-// @route   DELETE /api/hotels/:id
-// @access  Private (Hotel Manager / Admin)
 const deleteHotel = async (req, res) => {
   try {
     const hotel = await Hotel.findById(req.params.id);
@@ -131,17 +107,15 @@ const deleteHotel = async (req, res) => {
       return res.status(404).json({ message: 'Hotel not found' });
     }
 
-    // Verify ownership or admin role
     if (hotel.manager.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized to delete this hotel' });
+      return res.status(403).json({ message: 'Not authorized' });
     }
 
-    // Delete all rooms and bookings under this hotel
     await Room.deleteMany({ hotel: hotel._id });
     await Booking.deleteMany({ hotel: hotel._id });
     await hotel.deleteOne();
 
-    res.json({ message: 'Hotel and associated rooms removed successfully' });
+    res.json({ message: 'Hotel deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

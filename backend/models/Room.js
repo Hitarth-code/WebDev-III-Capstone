@@ -1,29 +1,27 @@
-// Room Model
-// Represents individual rooms or room types associated with a hotel
 const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema({
   hotel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Hotel',
-    required: [true, 'Room must belong to a hotel']
+    required: true
   },
   roomNumber: {
     type: String,
-    required: [true, 'Please enter room number (e.g., 101, 202)']
+    required: true
   },
   roomType: {
     type: String,
-    required: [true, 'Please enter room type'],
+    required: true,
     enum: ['Standard', 'Deluxe', 'Suite', 'Family Suite']
   },
   pricePerNight: {
     type: Number,
-    required: [true, 'Please enter price per night']
+    required: true
   },
   capacity: {
     type: Number,
-    required: [true, 'Please enter guest capacity'],
+    required: true,
     default: 2
   },
   amenities: {
@@ -32,7 +30,7 @@ const roomSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    default: 'Comfortable and clean room with modern amenities.'
+    default: 'Clean and comfortable room with modern amenities.'
   },
   image: {
     type: String,

@@ -1,4 +1,3 @@
-// Register Page
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -37,8 +36,8 @@ const Register = () => {
   return (
     <div className="auth-wrapper">
       <div className="auth-header">
-        <h2>Join StayEasy Today</h2>
-        <p>Create your account as a guest or hotel manager</p>
+        <h2>Register Account</h2>
+        <p>Create an account to book and manage stays</p>
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
@@ -56,18 +55,18 @@ const Register = () => {
         </div>
 
         <div className="form-group">
-          <label>Email Address</label>
+          <label>Email</label>
           <input
             type="email"
             required
-            placeholder="youremail@example.com"
+            placeholder="email@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
         <div className="form-group">
-          <label>Phone Number</label>
+          <label>Phone</label>
           <input
             type="tel"
             placeholder="+91 9876543210"
@@ -77,16 +76,16 @@ const Register = () => {
         </div>
 
         <div className="form-group">
-          <label>Account Role</label>
+          <label>Role</label>
           <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="guest">Guest (Search & Book Rooms)</option>
-            <option value="hotel_manager">Hotel Manager (Manage Hotels & Rooms)</option>
-            <option value="admin">Administrator (System-wide Access)</option>
+            <option value="guest">Guest</option>
+            <option value="hotel_manager">Hotel Manager</option>
+            <option value="admin">Admin</option>
           </select>
         </div>
 
         <div className="form-group">
-          <label>Password (min. 6 characters)</label>
+          <label>Password</label>
           <input
             type="password"
             required
@@ -97,12 +96,12 @@ const Register = () => {
         </div>
 
         <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-          {loading ? 'Creating Account...' : 'Sign Up'}
+          {loading ? 'Creating Account...' : 'Register'}
         </button>
       </form>
 
       <div className="auth-switch">
-        Already have an account? <Link to="/login">Sign In</Link>
+        Already have an account? <Link to="/login">Login</Link>
       </div>
     </div>
   );

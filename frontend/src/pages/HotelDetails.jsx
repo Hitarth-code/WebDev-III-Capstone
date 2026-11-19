@@ -1,4 +1,3 @@
-// Hotel Details & Room Booking Page
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { hotelAPI, roomAPI, bookingAPI } from '../services/api';
@@ -15,12 +14,10 @@ const HotelDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Date filters
   const [checkIn, setCheckIn] = useState(searchParams.get('checkIn') || '');
   const [checkOut, setCheckOut] = useState(searchParams.get('checkOut') || '');
   const [guests, setGuests] = useState(searchParams.get('guests') || 1);
 
-  // Booking Modal State
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingError, setBookingError] = useState('');
@@ -38,7 +35,6 @@ const HotelDetails = () => {
       const hotelData = await hotelAPI.getById(id);
       setHotel(hotelData);
 
-      // Query rooms with current date filters
       const params = {};
       if (checkIn) params.checkIn = checkIn;
       if (checkOut) params.checkOut = checkOut;
@@ -79,7 +75,6 @@ const HotelDetails = () => {
     }
   };
 
-  // Open booking modal
   const handleOpenBooking = (room) => {
     if (!isAuthenticated) {
       alert('Please log in or register to book a room.');
@@ -97,7 +92,6 @@ const HotelDetails = () => {
     setSelectedRoom(room);
   };
 
-  // Calculate total days and price
   const calculateTotal = () => {
     if (!checkIn || !checkOut || !selectedRoom) return { days: 0, total: 0 };
     const start = new Date(checkIn);
@@ -110,13 +104,10 @@ const HotelDetails = () => {
     };
   };
 
-  // Confirm booking
   const handleConfirmBooking = async () => {
     try {
       setBookingLoading(true);
       setBookingError('');
-
-      const { days, total } = calculateTotal();
 
       await bookingAPI.create({
         hotelId: hotel._id,
@@ -150,7 +141,6 @@ const HotelDetails = () => {
 
   return (
     <div>
-      {/* Hotel Banner Information */}
       <div className="hotel-banner">
         <img src={hotel.image} alt={hotel.name} className="hotel-banner-img" />
         <div className="hotel-banner-info">
@@ -168,20 +158,19 @@ const HotelDetails = () => {
           <p style={{ color: '#4b5563', marginTop: '12px', fontSize: '15px' }}>{hotel.description}</p>
           {hotel.phone && (
             <p style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
-              📞 Contact: {hotel.phone}
+              Contact: {hotel.phone}
             </p>
           )}
         </div>
       </div>
 
-      {/* Date Availability Filter Bar */}
       <div style={{ background: '#ffffff', padding: '16px 20px', borderRadius: '10px', marginBottom: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
         <h3 style={{ marginBottom: '12px', fontSize: '16px', color: '#374151' }}>
-          Check Room Availability by Dates (Overlap Query Protection)
+          Check Room Availability
         </h3>
         <form onSubmit={handleFilterRooms} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', alignItems: 'flex-end' }}>
           <div className="search-field">
-            <label>Check-in Date</label>
+            <label>Check-in</label>
             <input
               type="date"
               value={checkIn}
@@ -191,7 +180,7 @@ const HotelDetails = () => {
           </div>
 
           <div className="search-field">
-            <label>Check-out Date</label>
+            <label>Check-out</label>
             <input
               type="date"
               value={checkOut}
@@ -212,12 +201,11 @@ const HotelDetails = () => {
           </div>
 
           <button type="submit" className="btn btn-primary" style={{ height: '42px' }}>
-            🔄 Check Availability
+            Check
           </button>
         </form>
       </div>
 
-      {/* Available Rooms Section */}
       <div className="section-title">
         <span>Available Rooms ({rooms.length})</span>
       </div>
@@ -226,9 +214,9 @@ const HotelDetails = () => {
 
       {rooms.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '40px', background: '#fff', borderRadius: '10px' }}>
-          <h3>No rooms available for the selected dates or capacity.</h3>
+          <h3>No rooms available for the selected dates.</h3>
           <p style={{ color: '#6b7280', marginTop: '8px' }}>
-            Try adjusting your check-in/check-out dates or guest count.
+            Try choosing different dates.
           </p>
         </div>
       ) : (
@@ -245,8 +233,7 @@ const HotelDetails = () => {
                   {room.roomType} - Room #{room.roomNumber}
                 </h3>
                 <div className="room-meta">
-                  <span>👥 Up to {room.capacity} Guests</span>
-                  <span>✅ Instant Confirmation</span>
+                  <span>Capacity: {room.capacity} Persons</span>
                 </div>
                 <p style={{ fontSize: '13px', color: '#4b5563', marginBottom: '8px' }}>
                   {room.description}
@@ -269,7 +256,7 @@ const HotelDetails = () => {
                   className="btn btn-success"
                   style={{ marginTop: '10px' }}
                 >
-                  Book This Room
+                  Book Now
                 </button>
               </div>
             </div>
@@ -277,12 +264,11 @@ const HotelDetails = () => {
         </div>
       )}
 
-      {/* Booking Confirmation Modal */}
       {selectedRoom && (
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
-              <h3>Confirm Your Reservation</h3>
+              <h3>Confirm Booking</h3>
               <button onClick={() => setSelectedRoom(null)} className="modal-close-btn">
                 ✕
               </button>
@@ -300,9 +286,8 @@ const HotelDetails = () => {
               <p><strong>Guests:</strong> {guests} Guest(s)</p>
               <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
               <p style={{ fontSize: '18px', fontWeight: '700', color: '#2563eb' }}>
-                Total Amount: ₹{total}
+                Total: ₹{total}
               </p>
-              <small style={{ color: '#6b7280' }}>*Pay at hotel during check-in</small>
             </div>
 
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
@@ -318,7 +303,7 @@ const HotelDetails = () => {
                 className="btn btn-primary"
                 disabled={bookingLoading}
               >
-                {bookingLoading ? 'Confirming...' : 'Confirm Booking'}
+                {bookingLoading ? 'Booking...' : 'Confirm'}
               </button>
             </div>
           </div>

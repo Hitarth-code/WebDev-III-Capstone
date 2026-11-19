@@ -1,24 +1,22 @@
-// Hotel Model
-// Represents hotels managed by hotel managers or admin
 const mongoose = require('mongoose');
 
 const hotelSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please enter hotel name'],
+    required: true,
     trim: true
   },
   description: {
     type: String,
-    required: [true, 'Please enter hotel description']
+    required: true
   },
   address: {
     type: String,
-    required: [true, 'Please enter hotel address']
+    required: true
   },
   city: {
     type: String,
-    required: [true, 'Please enter city name'],
+    required: true,
     trim: true
   },
   rating: {
