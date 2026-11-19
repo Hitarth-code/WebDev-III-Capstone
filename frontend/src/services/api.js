@@ -1,13 +1,6 @@
 const getApiBase = () => {
   if (typeof window !== 'undefined') {
-    // If running in development on localhost
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      if (window.location.port === '3000') {
-        return '/api';
-      }
-      return 'http://localhost:5000/api';
-    }
-    // In production on Vercel or any other domain, use relative /api
+    // Both localhost frontend ports use Vite's /api proxy.
     return '/api';
   }
   return '/api';

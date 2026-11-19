@@ -45,8 +45,18 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT) || 5000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Cannot start server: port ${PORT} is already in use.`);
+    console.error('Stop the existing process or set a different PORT in backend/.env.');
+  } else {
+    console.error(`Unable to start server on port ${PORT}: ${error.message}`);
+  }
+  process.exitCode = 1;
 });
